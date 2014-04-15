@@ -68,6 +68,14 @@ class Parser
   end
 
   def self.parse(line)
-    line.scan(/\W|\w+/).select{|s| s != ' '}.map{|s| s =~ /^\d+$/ ? s.to_i : s }
+    line.scan(/\W|[\w.]+/).select{|s| s != ' '}.map do |s|
+      if s =~ /^\d+$/
+        s.to_i
+      elsif s =~ /^[-+]?[0-9]*\.?[0-9]+$/
+        s.to_f
+      else
+        s
+      end
+    end
   end
 end

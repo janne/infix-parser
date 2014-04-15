@@ -7,12 +7,16 @@ describe Parser do
   end
 
   describe "#infix" do
-    it "should handle single values" do
+    it "should handle integers" do
       expect(Parser.new("1").infix).to eq [1]
     end
 
+    it "should handle floats" do
+      expect(Parser.new("3.14").infix).to eq [3.14]
+    end
+
     it "should handle multiple values" do
-      expect(Parser.new("1 + 1").infix).to eq [1, '+', 1]
+      expect(Parser.new("1 + 1.0").infix).to eq [1, '+', 1.0]
     end
 
     it "should handle values w/o whitespace" do
