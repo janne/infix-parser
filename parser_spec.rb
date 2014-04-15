@@ -27,4 +27,15 @@ describe Parser do
       expect(Parser.new("((100+10))").infix).to eq %w[( ( 100 + 10 ) )]
     end
   end
+
+  describe "#postfix" do
+    it "handles simple expressions" do
+      expect(Parser.new("1 + 1").postfix).to eq %w[1 1 +]
+    end
+
+    it "caches the result" do
+      parser = Parser.new("1 + 1")
+      expect(parser.postfix.object_id).to eq parser.postfix.object_id
+    end
+  end
 end
