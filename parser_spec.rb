@@ -42,5 +42,9 @@ describe Parser do
     it "handles presdence" do
       expect(Parser.new("A + B * C - D").postfix).to eq %w[A B C * + D -]
     end
+
+    it "handles parenthesis" do
+      expect(Parser.new("3 + 4 * 2 / ( 1 - 5 )").postfix).to eq %w[3 4 2 * 1 5 - / +]
+    end
   end
 end

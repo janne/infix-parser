@@ -18,8 +18,14 @@ class Parser
     @postfix ||= [].tap do |output|
       stack = []
       @infix.each do |token|
-        if presedence = Parser::OPERATIONS[token]
-          while (peeked = stack.last) && presedence <= Parser::OPERATIONS[peeked]
+        if token == '('
+          stack.push(token)
+        elsif token == ')'
+          while (popped = stack.pop) && popped != '('
+            output << popped
+          end
+        elsif presedence = Parser::OPERATIONS[token]
+          while (peeked = stack.last) && peeked != '(' && presedence <= Parser::OPERATIONS[peeked]
             output << stack.pop
           end
           stack.push token
