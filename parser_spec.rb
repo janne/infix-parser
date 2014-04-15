@@ -47,4 +47,10 @@ describe Parser do
       expect(Parser.new("3 + 4 * 2 / ( 1 - 5 )").postfix).to eq [3, 4, 2, '*', 1, 5, '-', '/', '+']
     end
   end
+
+  describe "#eval" do
+    it "evaluates the expression" do
+      expect(Parser.new("3 + 4 * 2 / ( 1 - 5 )").eval).to eq 1
+    end
+  end
 end

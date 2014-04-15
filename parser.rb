@@ -1,13 +1,43 @@
 class Parser
+  Operation = Struct.new(:presedence, :method)
+
   OPERATIONS = {
-    "+" => 6,
-    "-" => 6,
-    "*" => 7,
-    "/" => 7,
+    "+" => Operation.new(1, :add),
+    "-" => Operation.new(1, :sub),
+    "*" => Operation.new(2, :mul),
+    "/" => Operation.new(2, :div),
   }
 
   def initialize(line)
     @infix = Parser.parse(line)
+  end
+
+  def eval
+    stack = []
+    postfix.each do |token|
+      if op = Parser::OPERATIONS[token]
+        stack.push send(op.method, *[stack.pop, stack.pop].reverse)
+      else
+        stack.push token
+      end
+    end
+    stack.pop
+  end
+
+  def mul(a, b)
+    a * b
+  end
+
+  def add(a, b)
+    a + b
+  end
+
+  def sub(a, b)
+    a - b
+  end
+
+  def div(a, b)
+    a / b
   end
 
   def infix
@@ -24,8 +54,8 @@ class Parser
           while (popped = stack.pop) && popped != '('
             output << popped
           end
-        elsif presedence = Parser::OPERATIONS[token]
-          while (peeked = stack.last) && peeked != '(' && presedence <= Parser::OPERATIONS[peeked]
+        elsif operation = Parser::OPERATIONS[token]
+          while (peeked = stack.last) && peeked != '(' && operation.presedence <= Parser::OPERATIONS[peeked].presedence
             output << stack.pop
           end
           stack.push token
