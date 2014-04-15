@@ -19,11 +19,11 @@ describe Parser do
       expect(Parser.new("2+1").infix).to eq %w[2 + 1]
     end
 
-    it "should handle parenthesis" do
+    it "should handle parentheses" do
       expect(Parser.new("(1+1)").infix).to eq %w[( 1 + 1 )]
     end
 
-    it "should handle multiple parenthesis" do
+    it "should handle multiple parentheses" do
       expect(Parser.new("((100+10))").infix).to eq %w[( ( 100 + 10 ) )]
     end
   end
@@ -43,7 +43,7 @@ describe Parser do
       expect(Parser.new("A + B * C - D").postfix).to eq %w[A B C * + D -]
     end
 
-    it "handles parenthesis" do
+    it "handles parentheses" do
       expect(Parser.new("3 + 4 * 2 / ( 1 - 5 )").postfix).to eq %w[3 4 2 * 1 5 - / +]
     end
   end
