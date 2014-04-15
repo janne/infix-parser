@@ -1,10 +1,10 @@
 class Parser
   def initialize(line)
-    @parsed = Parser.parse(line)
+    @infix = Parser.parse(line)
   end
 
-  def length
-    @parsed.length
+  def infix
+    @infix
   end
 
   def self.parse(line)
