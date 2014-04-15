@@ -8,30 +8,30 @@ describe Parser do
 
   describe "#infix" do
     it "should handle single values" do
-      expect(Parser.new("1").infix).to eq %w[1]
+      expect(Parser.new("1").infix).to eq [1]
     end
 
     it "should handle multiple values" do
-      expect(Parser.new("1 + 1").infix).to eq %w[1 + 1]
+      expect(Parser.new("1 + 1").infix).to eq [1, '+', 1]
     end
 
     it "should handle values w/o whitespace" do
-      expect(Parser.new("2+1").infix).to eq %w[2 + 1]
+      expect(Parser.new("2+1").infix).to eq [2, '+', 1]
     end
 
     it "should handle parentheses" do
-      expect(Parser.new("(1+1)").infix).to eq %w[( 1 + 1 )]
+      expect(Parser.new("(1+1)").infix).to eq ['(', 1, '+', 1, ')']
     end
 
     it "should handle multiple parentheses" do
-      expect(Parser.new("((100+10))").infix).to eq %w[( ( 100 + 10 ) )]
+      expect(Parser.new("((100+10))").infix).to eq ['(', '(', 100, '+', 10, ')', ')']
     end
   end
 
   describe "#postfix" do
     it "handles simple expressions" do
-      expect(Parser.new("3 + 4").postfix).to eq %w[3 4 +]
-      expect(Parser.new("1 + 2 - 3").postfix).to eq %w[1 2 + 3 -]
+      expect(Parser.new("3 + 4").postfix).to eq [3, 4, '+']
+      expect(Parser.new("1 + 2 - 3").postfix).to eq [1, 2, '+', 3, '-']
     end
 
     it "caches the result" do
@@ -44,7 +44,7 @@ describe Parser do
     end
 
     it "handles parentheses" do
-      expect(Parser.new("3 + 4 * 2 / ( 1 - 5 )").postfix).to eq %w[3 4 2 * 1 5 - / +]
+      expect(Parser.new("3 + 4 * 2 / ( 1 - 5 )").postfix).to eq [3, 4, 2, '*', 1, 5, '-', '/', '+']
     end
   end
 end

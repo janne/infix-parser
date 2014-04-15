@@ -38,6 +38,6 @@ class Parser
   end
 
   def self.parse(line)
-    line.scan(/\W|\w+/).select{|s| s != ' '}
+    line.scan(/\W|\w+/).select{|s| s != ' '}.map{|s| s =~ /^\d+$/ ? s.to_i : s }
   end
 end
