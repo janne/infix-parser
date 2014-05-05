@@ -1,3 +1,5 @@
+require 'node'
+
 class Parser
   Operation = Struct.new(:presedence, :method)
 
@@ -42,6 +44,18 @@ class Parser
 
   def infix
     @infix
+  end
+
+  def tree
+    stack = []
+    postfix.each do |token|
+      if op = Parser::OPERATIONS[token]
+        stack.push Node.new(op) << stack.pop << stack.pop
+      else
+        stack.push token
+      end
+    end
+    stack.pop
   end
 
   def postfix

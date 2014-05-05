@@ -53,6 +53,12 @@ describe Parser do
     end
   end
 
+  describe "#tree" do
+    it "returns a Node" do
+      expect(Parser.new("1+1").tree).to be_a(Node)
+    end
+  end
+
   describe "#eval" do
     it "evaluates the expression" do
       expect(Parser.new("3 + 4 * 2 / ( 1 - 5 )").eval).to eq 1
