@@ -21,6 +21,10 @@ It is also possible to turn the expression into a postfix expression by invoking
 
     => [14, 1, 2, "+", "*"]
 
-A simple REPL is included in `repl.rb`.
+Or a tree
 
-    $ ruby repl.rb
+    parser.tree
+
+A simple REPL is included
+
+    $ ./repl
