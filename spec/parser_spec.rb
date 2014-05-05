@@ -1,4 +1,5 @@
-require_relative './parser'
+require 'spec_helper'
+require 'parser'
 
 describe Parser do
   let(:parser) { Parser.new("1 + 1") }
