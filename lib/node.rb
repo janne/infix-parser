@@ -10,4 +10,12 @@ class Node
     @children << child
     self
   end
+
+  def eval
+    if content.is_a?(Operand)
+      content.call *children.map(&:eval)
+    else
+      content
+    end
+  end
 end

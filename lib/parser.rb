@@ -1,45 +1,13 @@
 require 'node'
+require 'operand'
 
 class Parser
-  Operation = Struct.new(:presedence, :method)
-
-  OPERATIONS = {
-    "+" => Operation.new(1, :add),
-    "-" => Operation.new(1, :sub),
-    "*" => Operation.new(2, :mul),
-    "/" => Operation.new(2, :div),
-  }
-
   def initialize(line)
     @infix = Parser.parse(line)
   end
 
   def eval
-    stack = []
-    postfix.each do |token|
-      if op = Parser::OPERATIONS[token]
-        stack.push send(op.method, *[stack.pop, stack.pop].reverse)
-      else
-        stack.push token
-      end
-    end
-    stack.pop
-  end
-
-  def mul(a, b)
-    a * b
-  end
-
-  def add(a, b)
-    a + b
-  end
-
-  def sub(a, b)
-    a - b
-  end
-
-  def div(a, b)
-    a / b
+    tree.eval
   end
 
   def infix
@@ -49,10 +17,12 @@ class Parser
   def tree
     stack = []
     postfix.each do |token|
-      if op = Parser::OPERATIONS[token]
-        stack.push Node.new(op) << stack.pop << stack.pop
+      if op = Operand.find(token)
+        arg1 = stack.pop
+        arg0 = stack.pop
+        stack.push Node.new(op) << arg0 << arg1
       else
-        stack.push token
+        stack.push Node.new(token)
       end
     end
     stack.pop
@@ -68,8 +38,8 @@ class Parser
           while (popped = stack.pop) && popped != '('
             output << popped
           end
-        elsif operation = Parser::OPERATIONS[token]
-          while (peeked = stack.last) && peeked != '(' && operation.presedence <= Parser::OPERATIONS[peeked].presedence
+        elsif operation = Operand.find(token)
+          while (peeked = stack.last) && peeked != '(' && operation.presedence <= Operand.find(peeked).presedence
             output << stack.pop
           end
           stack.push token
