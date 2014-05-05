@@ -1,14 +1,9 @@
 class Node
   attr_reader :content, :children
 
-  def initialize(content)
+  def initialize(content, children = [])
     @content = content
-    @children = []
-  end
-
-  def <<(child)
-    @children << child
-    self
+    @children = children
   end
 
   def eval

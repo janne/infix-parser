@@ -18,9 +18,7 @@ class Parser
     stack = []
     postfix.each do |token|
       if op = Operand.find(token)
-        arg1 = stack.pop
-        arg0 = stack.pop
-        stack.push Node.new(op) << arg0 << arg1
+        stack.push Node.new(op, stack.pop(2))
       else
         stack.push Node.new(token)
       end
